@@ -1,0 +1,17 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static "deps/styles/style.css" %}">
+{% endblock css %}
+
+
+{% block content %}
+    <h2>Содержание</h2>
+    <p>Тематические группы</p>
+    <ul>
+        <li><a href="#">Транспорт</a></li>
+        <li><a href="#">Одежда</a></li>
+        <li><a href="#">Дом</a></li>
+    </ul>
+{% endblock content %}
