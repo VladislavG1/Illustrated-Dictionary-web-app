@@ -1,35 +1,11 @@
 from django.shortcuts import render
+from .models import Group
 
 def catalog(request):
+    data_group = Group.objects.all()
     context = {
         'title': "Содержание - Илюстрированный словарь",
-        'groups': [
-            {
-                "id": 1,
-                "name": "Вопросы",
-                "alias_name": "questions",
-            },
-            {
-                "id": 2,
-                "name": "Время",
-                "alias_name": "time",
-            },
-            {
-                "id": 3,
-                "name": "Город",
-                "alias_name": "city",
-            },
-            {
-                "id": 4,
-                "name": "Одежда",
-                "alias_name": "clothes",
-            },
-            {
-                "id": 5,
-                "name": "Дом",
-                "alias_name": "house",
-            },
-        ],
+        'groups': data_group
     }
     return render(request, 'dictionary/catalog.html', context)
 

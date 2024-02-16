@@ -1,5 +1,7 @@
 from django.contrib import admin
 
-from dictionary.models import Categories
+from dictionary.models import Group, Word, WordGroup
 
-admin.site.register(Categories)
+admin.site.register(Group)
+admin.site.register(Word)
+admin.site.register(WordGroup)

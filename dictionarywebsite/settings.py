@@ -80,8 +80,12 @@ WSGI_APPLICATION = 'dictionarywebsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'dictionary',
+        'USER': 'dictionary',
+        'PASSWORD': 'IET0tVeQC6sbgzC',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
