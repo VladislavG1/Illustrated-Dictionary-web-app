@@ -10,8 +10,8 @@
     <h2>Содержание</h2>
     <p>Тематические группы</p>
     <ul>
-        <li><a href="#">Транспорт</a></li>
-        <li><a href="#">Одежда</a></li>
-        <li><a href="#">Дом</a></li>
+        {% for group in groups %}
+        <li><a href="{{ group.alias_name }}">{{ group.name }}</a></li>
+        {% endfor %}
     </ul>
 {% endblock content %}
