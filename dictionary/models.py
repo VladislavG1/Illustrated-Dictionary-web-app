@@ -21,7 +21,6 @@ class Group(models.Model):
     def __str__(self):
         return f"{self.name} ({self.pk})"
 
-
 class Word(models.Model):
     name = models.CharField(max_length=128, verbose_name='Слово')
     transcription = models.CharField(max_length=128, blank=True, null=True, verbose_name='Транскрипция')
@@ -49,3 +48,4 @@ class WordGroup(models.Model):
     
     def __str__(self):
         return f"{self.group.name} - {self.word.name} ({self.pk})"
+    
