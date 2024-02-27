@@ -24,6 +24,8 @@ class Group(models.Model):
 class Word(models.Model):
     name = models.CharField(max_length=128, verbose_name='Слово')
     transcription = models.CharField(max_length=128, blank=True, null=True, verbose_name='Транскрипция')
+    example = models.TextField(blank=True, null=True, verbose_name="Пример")
+    image = models.ImageField(upload_to='dictionary_images', blank=True, null=True, verbose_name='Изображение')
 
     class Meta:
         managed = False
