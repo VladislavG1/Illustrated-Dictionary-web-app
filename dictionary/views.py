@@ -14,3 +14,13 @@ def word(request):
         'title': "Слово - Иллюстрированный словарь"
     }
     return render(request, 'dictionary/word.html', context)
+
+def group(request, group_slug):
+
+    data_group = Group.objects.get(alias_name=group_slug)
+
+    context = {
+        'title': "Тематическая группа - Иллюстрированный словарь",
+        'group': data_group
+    }
+    return render(request, 'dictionary/group.html', context)

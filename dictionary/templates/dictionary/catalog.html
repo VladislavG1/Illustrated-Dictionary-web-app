@@ -11,7 +11,7 @@
     <p>Тематические группы</p>
     <ul>
         {% for group in groups %}
-        <li><a href="{{ group.alias_name }}">{{ group.name }}</a></li>
+        <li><a href="{% url "catalog:group" group.alias_name %}">{{ group.name }}</a></li>
         {% endfor %}
     </ul>
 {% endblock content %}
