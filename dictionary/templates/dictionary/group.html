@@ -8,4 +8,11 @@
 
 {% block content %}
     <h2>{{ group.name }}</h2>
+    <ul>
+        {% for word in wordgroup %}
+            {% if word.group.pk == group.pk %}
+                <li><a href="#">{{ word.word.getName }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
 {% endblock content %}

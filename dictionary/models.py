@@ -36,7 +36,9 @@ class Word(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name} ({self.pk})"
-
+    
+    def getName(self):
+        return f"{self.name}"
 
 class WordGroup(models.Model):
     
