@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Group, WordGroup
+from .models import Group, Word, WordGroup
 
 def catalog(request):
     data_group = Group.objects.all()
@@ -9,10 +9,13 @@ def catalog(request):
     }
     return render(request, 'dictionary/catalog.html', context)
 
-def word(request):
+def word(request, word_id):
     
+    data_word = Word.objects.get(pk=word_id)
+
     context = {
-        'title': "Слово - Иллюстрированный словарь"
+        'title': "Слово - Иллюстрированный словарь",
+        'words': data_word
     }
     return render(request, 'dictionary/word.html', context)
 

@@ -6,6 +6,6 @@ app_name = 'dictionary'
 
 urlpatterns = [
     path('', views.catalog, name='index'),
-    path('word/', views.word, name='word'),
-    path('<slug:group_slug>/', views.group, name='group'),
+    path('words/<int:word_id>/', views.word, name='word'),
+    path('groups/<slug:group_slug>/', views.group, name='group'),
 ]
