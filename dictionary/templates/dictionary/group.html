@@ -11,7 +11,7 @@
     <ul>
         {% for word in wordgroup %}
             {% if word.group.pk == group.pk %}
-                <li><a href="{% url "catalog:word" word.word.pk %}">{{ word.word.getName }}</a></li>
+                <li><a href="{% url "catalog:word" word.word.alias_name %}">{{ word.word.getName }}</a></li>
             {% endif %}
         {% endfor %}
     </ul>

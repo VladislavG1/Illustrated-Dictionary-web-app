@@ -9,9 +9,9 @@ def catalog(request):
     }
     return render(request, 'dictionary/catalog.html', context)
 
-def word(request, word_id):
+def word(request, word_slug):
     
-    data_word = Word.objects.get(pk=word_id)
+    data_word = Word.objects.get(alias_name=word_slug)
 
     context = {
         'title': "Слово - Иллюстрированный словарь",

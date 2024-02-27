@@ -10,8 +10,8 @@ from django.urls import reverse
 
 
 class Group(models.Model):
-    name = models.CharField(max_length=128, verbose_name='Название группы')
-    alias_name = models.CharField(max_length=128, verbose_name='Кодовое слово для группы')
+    name = models.CharField(max_length=128, unique=True, verbose_name='Название группы')
+    alias_name = models.CharField(max_length=128, unique=True, verbose_name='Кодовое обозначение для группы')
 
     class Meta:
         managed = False
@@ -24,6 +24,7 @@ class Group(models.Model):
 
 class Word(models.Model):
     name = models.CharField(max_length=128, verbose_name='Слово')
+    alias_name = models.CharField(max_length=128, unique=True, verbose_name='Кодовое обозначение для слова')
     transcription = models.CharField(max_length=128, blank=True, null=True, verbose_name='Транскрипция')
     example = models.TextField(blank=True, null=True, verbose_name="Пример")
     image = models.ImageField(upload_to='dictionary_images', blank=True, null=True, verbose_name='Изображение')
