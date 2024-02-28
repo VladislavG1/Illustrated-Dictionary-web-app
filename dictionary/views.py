@@ -17,7 +17,7 @@ def word(request, word_slug):
     data_wordgroup = WordGroup.objects.all()
 
     context = {
-        'title': "Слово - Иллюстрированный словарь",
+        'title': "- Иллюстрированный словарь",
         'words': data_word,
         'wordgroup': data_wordgroup
     }
@@ -30,7 +30,16 @@ def group(request, group_slug):
 
     with_voice = request.GET.get('with_voice', None)
     prefix = request.GET.get('prefix', None)
-    suffix = request.GET.get('suffix', None)
+    postfix = request.GET.get('postfix', None)
+    capital_letters = request.GET.get('capital_letters', None)
+
+    if capital_letters:
+        letters = list(capital_letters)
+        filtered_words = []
+        for letter in letters:
+            filtered_words.extend(Word.objects.filter(Q(name__startswith=letter) | Q(name__startswith=letter.lower())))
+        
+        data_wordgroup = data_wordgroup.filter(word__in=filtered_words)
     
     if with_voice:
         data_wordgroup = data_wordgroup.filter(~Q(word__audio=''))
@@ -38,8 +47,8 @@ def group(request, group_slug):
     if prefix:
         data_wordgroup = data_wordgroup.filter(word__name__startswith=prefix)
 
-    if suffix:
-        data_wordgroup = data_wordgroup.filter(word__name__endswith=suffix)
+    if postfix:
+        data_wordgroup = data_wordgroup.filter(word__name__endswith=postfix)
 
     paginator = Paginator(data_wordgroup, 1)
     current_page = request.GET.get('page')
@@ -52,7 +61,7 @@ def group(request, group_slug):
         wordgroup = paginator.page(paginator.num_pages)
 
     context = {
-        'title': "Тематическая группа - Иллюстрированный словарь",
+        'title': "- Иллюстрированный словарь",
         'group': data_group,
         'wordgroup': wordgroup,
         'slug_url': group_slug

@@ -3,6 +3,7 @@
 {% load dictionary_tags %}
 
 {% block css %}
+    <title>{{ group.name }} {{ title }}</title>
     <link rel="stylesheet" href="{% static "deps/styles/style.css" %}">
 {% endblock css %}
 
@@ -14,26 +15,21 @@
             <p><b>Фильтры</b></p>
             <form action="{% url "catalog:group" slug_url %}" method="get" class="filter-form">
                 <p>
-                    Диапазон заглавных букв:
+                    Набор заглавных букв:
                 </p>
     
                 <p>
-                    От
-                    <input type="text" name="start_letter" value="">
-                </p>
-                <p>
-                    До
-                    <input type="text" name="end_letter" value="">
+                    <input type="text" name="capital_letters" placeholder="АБВГД..." value="{% if request.GET.capital_letters %}{{ request.GET.capital_letters }}{% endif %}">
                 </p>
     
                 <p>
                     Префикс:
-                    <input type="text" name="prefix" value="{% if request.GET.prefix %}{{ request.GET.prefix }}{% endif %}">
+                    <input type="text" name="prefix" placeholder="Сло" value="{% if request.GET.prefix %}{{ request.GET.prefix }}{% endif %}">
                 </p>
     
                 <p>
-                    Суффикс:
-                    <input type="text" name="suffix" value="{% if request.GET.suffix %}{{ request.GET.suffix }}{% endif %}">
+                    Постфикс:
+                    <input type="text" name="postfix" placeholder="во" value="{% if request.GET.postfix %}{{ request.GET.postfix }}{% endif %}">
                 </p>
     
                 <p>
