@@ -15,4 +15,22 @@
             {% endif %}
         {% endfor %}
     </ul>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if wordgroup.has_previous %}
+                <a href="?page=1">&laquo; первая</a>
+                <a href="?page={{ wordgroup.previous_page_number }}">предыдущая</a>
+            {% endif %}
+ 
+            <span class="current">
+                Страница {{ wordgroup.number }} из {{ wordgroup.paginator.num_pages }}.
+            </span>
+ 
+            {% if wordgroup.has_next %}
+                <a href="?page={{ wordgroup.next_page_number }}">следующая</a>
+                <a href="?page={{ wordgroup.paginator.num_pages }}">последняя &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 {% endblock content %}

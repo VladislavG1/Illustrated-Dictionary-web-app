@@ -1,3 +1,4 @@
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render
 from .models import Group, Word, WordGroup
 
@@ -24,11 +25,21 @@ def word(request, word_slug):
 def group(request, group_slug):
 
     data_group = Group.objects.get(alias_name=group_slug)
-    data_wordgroup = WordGroup.objects.all()
+    data_wordgroup = WordGroup.objects.filter(group=data_group)
+
+    paginator = Paginator(data_wordgroup, 3)
+    current_page = request.GET.get('page')
+
+    try:
+        wordgroup = paginator.page(current_page)
+    except PageNotAnInteger:
+        wordgroup = paginator.page(1)
+    except EmptyPage:
+        wordgroup = paginator.page(paginator.num_pages)
 
     context = {
         'title': "Тематическая группа - Иллюстрированный словарь",
         'group': data_group,
-        'wordgroup': data_wordgroup
+        'wordgroup': wordgroup
     }
     return render(request, 'dictionary/group.html', context)
