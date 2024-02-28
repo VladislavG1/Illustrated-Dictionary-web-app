@@ -44,3 +44,23 @@ body {
     margin: 0 auto;
     width: 80%;
 }
+
+.word-img-example {
+    width: 350px;
+}
+
+.group-icon {
+    width: 55px;
+}
+
+.handwritten-text {
+    display: inline-block;
+    font-family: 'Propisi';
+    font-size: 110pt;
+    margin: 0;
+    padding: 100px;
+    background-image: url(../images/handwritten_pattern.svg);
+    background-size: fixed;
+    background-position-y: 5%;
+    background-position-x: -190%;
+}

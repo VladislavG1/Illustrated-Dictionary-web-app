@@ -12,6 +12,7 @@ from django.urls import reverse
 class Group(models.Model):
     name = models.CharField(max_length=128, unique=True, verbose_name='Название группы')
     alias_name = models.CharField(max_length=128, unique=True, verbose_name='Кодовое обозначение для группы')
+    icon = models.ImageField(upload_to='group_icons', blank=True, null=True, verbose_name='Иконка')
 
     class Meta:
         managed = False
@@ -28,6 +29,7 @@ class Word(models.Model):
     transcription = models.CharField(max_length=128, blank=True, null=True, verbose_name='Транскрипция')
     example = models.TextField(blank=True, null=True, verbose_name="Пример")
     image = models.ImageField(upload_to='dictionary_images', blank=True, null=True, verbose_name='Изображение')
+    audio = models.FileField(upload_to='words_audio', blank=True, null=True, verbose_name='Аудио')
 
     class Meta:
         managed = False

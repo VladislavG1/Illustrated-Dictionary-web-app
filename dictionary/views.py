@@ -12,10 +12,12 @@ def catalog(request):
 def word(request, word_slug):
     
     data_word = Word.objects.get(alias_name=word_slug)
+    data_wordgroup = WordGroup.objects.all()
 
     context = {
         'title': "Слово - Иллюстрированный словарь",
-        'words': data_word
+        'words': data_word,
+        'wordgroup': data_wordgroup
     }
     return render(request, 'dictionary/word.html', context)
 

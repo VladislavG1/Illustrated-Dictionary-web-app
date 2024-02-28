@@ -3,9 +3,34 @@
 
 {% block css %}
     <link rel="stylesheet" href="{% static "deps/styles/style.css" %}">
+    <link rel="stylesheet" href="{% static "deps/fonts/propisi/fonts.css" %}">
 {% endblock css %}
 
 
 {% block content %}
     <h2 style="color: red;">{{ words.name }}</h2>
+    
+    <div>
+        <p class="handwritten-text">{{ words.name }}</p>
+    </div>
+
+    {% if words.image %}
+        <img src="{{ words.image.url }}" class="word-img-example" alt="{{ words.name }}">
+    {% else %}
+        <img src="{% static "deps/images/Not image.png" %}" class="word-img-example" alt="{{ words.name }}">
+    {% endif %}
+
+    {% if words.audio %}
+        <audio controls="controls" src="{{ words.audio.url }}"></audio>
+    {% endif %}
+
+    <p>{{ words.example }}</p>
+
+    {% for group in wordgroup %}
+        {% if group.word.pk == words.pk %}
+            {% if group.group.icon %}
+                <a href="{% url "catalog:group" group.group.alias_name %}"><img src="{{ group.group.icon.url }}" class="group-icon" alt="{{ group.group.name }}"></a>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
 {% endblock content %}
