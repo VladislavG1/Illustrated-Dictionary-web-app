@@ -11,6 +11,7 @@ body {
     display: flex;
     justify-content: space-between;
     background-color: #d6d6d6;
+    margin-bottom: 10px;
 }
 
 .nav-container>nav>ul {
@@ -63,4 +64,20 @@ body {
     background-size: fixed;
     background-position-y: 5%;
     background-position-x: -190%;
+}
+
+.group-page {
+    display: flex;
+    justify-content: flex-start;
+
+}
+
+.group-filter-block {
+    display: inline-block;
+    margin-right: 10px;
+    border-style: solid;
+    border-width: 1px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
 }

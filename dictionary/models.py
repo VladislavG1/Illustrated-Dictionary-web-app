@@ -7,7 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.urls import reverse
-
+from django.core.files.storage import default_storage
 
 class Group(models.Model):
     name = models.CharField(max_length=128, unique=True, verbose_name='Название группы')
@@ -42,6 +42,14 @@ class Word(models.Model):
     
     def getName(self):
         return f"{self.name}"
+    
+    def is_audio(self):
+        if self.audio:
+            return True
+        elif default_storage.exists(self.audio.name):
+            return True
+        else:
+            return False
 
 class WordGroup(models.Model):
     

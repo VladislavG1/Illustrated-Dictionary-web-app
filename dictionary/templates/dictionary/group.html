@@ -1,5 +1,6 @@
 {% extends "main/base.html" %}
 {% load static %}
+{% load dictionary_tags %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static "deps/styles/style.css" %}">
@@ -7,30 +8,74 @@
 
 
 {% block content %}
-    <h2>{{ group.name }}</h2>
-    <ul>
-        {% for word in wordgroup %}
-            {% if word.group.pk == group.pk %}
-                <li><a href="{% url "catalog:word" word.word.alias_name %}">{{ word.word.getName }}</a></li>
-            {% endif %}
-        {% endfor %}
-    </ul>
+    <div class="group-page">
 
-    <div class="pagination">
-        <span class="step-links">
-            {% if wordgroup.has_previous %}
-                <a href="?page=1">&laquo; первая</a>
-                <a href="?page={{ wordgroup.previous_page_number }}">предыдущая</a>
-            {% endif %}
- 
-            <span class="current">
-                Страница {{ wordgroup.number }} из {{ wordgroup.paginator.num_pages }}.
-            </span>
- 
-            {% if wordgroup.has_next %}
-                <a href="?page={{ wordgroup.next_page_number }}">следующая</a>
-                <a href="?page={{ wordgroup.paginator.num_pages }}">последняя &raquo;</a>
-            {% endif %}
-        </span>
+        <div class="group-filter-block">
+            <p><b>Фильтры</b></p>
+            <form action="{% url "catalog:group" slug_url %}" method="get" class="filter-form">
+                <p>
+                    Диапазон заглавных букв:
+                </p>
+    
+                <p>
+                    От
+                    <input type="text" name="start_letter" value="">
+                </p>
+                <p>
+                    До
+                    <input type="text" name="end_letter" value="">
+                </p>
+    
+                <p>
+                    Префикс:
+                    <input type="text" name="prefix" value="{% if request.GET.prefix %}{{ request.GET.prefix }}{% endif %}">
+                </p>
+    
+                <p>
+                    Суффикс:
+                    <input type="text" name="suffix" value="{% if request.GET.suffix %}{{ request.GET.suffix }}{% endif %}">
+                </p>
+    
+                <p>
+                    <input type="checkbox" name="with_voice" value="true" {% if request.GET.with_voice == 'true' %}checked{% endif %}>
+                    Только с озвучкой
+                </p>
+    
+                <p>
+                    <button type="submit">Применить</button>
+                </p>
+            </form>
+        </div>
+    
+        <div class="group-container-block">
+            <h2>{{ group.name }}</h2>
+            <ul>
+                {% for word in wordgroup %}
+                    {% if word.group.pk == group.pk %}
+                        <li><a href="{% url "catalog:word" word.word.alias_name %}">{{ word.word.getName }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        
+            <div class="pagination">
+                <span class="step-links">
+                    {% if wordgroup.has_previous %}
+                        <a href="?{% change_params page=1 %}">&laquo; первая</a>
+                        <a href="?{% change_params page=wordgroup.previous_page_number %}">предыдущая</a>
+                    {% endif %}
+         
+                    <span class="current">
+                        Страница {{ wordgroup.number }} из {{ wordgroup.paginator.num_pages }}.
+                    </span> 
+         
+                    {% if wordgroup.has_next %}
+                        <a href="?{% change_params page=wordgroup.next_page_number %}">следующая</a>
+                        <a href="?{% change_params page=wordgroup.paginator.num_pages %}">последняя &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
     </div>
+
 {% endblock content %}

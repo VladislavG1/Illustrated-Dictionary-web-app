@@ -1,6 +1,7 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render
 from .models import Group, Word, WordGroup
+from django.db.models import Q
 
 def catalog(request):
     data_group = Group.objects.all()
@@ -27,7 +28,20 @@ def group(request, group_slug):
     data_group = Group.objects.get(alias_name=group_slug)
     data_wordgroup = WordGroup.objects.filter(group=data_group)
 
-    paginator = Paginator(data_wordgroup, 3)
+    with_voice = request.GET.get('with_voice', None)
+    prefix = request.GET.get('prefix', None)
+    suffix = request.GET.get('suffix', None)
+    
+    if with_voice:
+        data_wordgroup = data_wordgroup.filter(~Q(word__audio=''))
+
+    if prefix:
+        data_wordgroup = data_wordgroup.filter(word__name__startswith=prefix)
+
+    if suffix:
+        data_wordgroup = data_wordgroup.filter(word__name__endswith=suffix)
+
+    paginator = Paginator(data_wordgroup, 1)
     current_page = request.GET.get('page')
 
     try:
@@ -40,6 +54,7 @@ def group(request, group_slug):
     context = {
         'title': "Тематическая группа - Иллюстрированный словарь",
         'group': data_group,
-        'wordgroup': wordgroup
+        'wordgroup': wordgroup,
+        'slug_url': group_slug
     }
     return render(request, 'dictionary/group.html', context)
