@@ -1,5 +1,6 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render
+
 from .models import Group, Word, WordGroup
 from django.db.models import Q
 
@@ -33,6 +34,9 @@ def group(request, group_slug):
     postfix = request.GET.get('postfix', None)
     capital_letters = request.GET.get('capital_letters', None)
 
+    cyrillic = ["а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ы", "э", "ю", "я"]
+
+
     if capital_letters:
         letters = list(capital_letters)
         filtered_words = []
@@ -50,7 +54,7 @@ def group(request, group_slug):
     if postfix:
         data_wordgroup = data_wordgroup.filter(word__name__endswith=postfix)
 
-    paginator = Paginator(data_wordgroup, 1)
+    paginator = Paginator(data_wordgroup, 3)
     current_page = request.GET.get('page')
 
     try:
@@ -64,6 +68,7 @@ def group(request, group_slug):
         'title': "- Иллюстрированный словарь",
         'group': data_group,
         'wordgroup': wordgroup,
-        'slug_url': group_slug
+        'slug_url': group_slug,
+        'alphabet': cyrillic
     }
     return render(request, 'dictionary/group.html', context)

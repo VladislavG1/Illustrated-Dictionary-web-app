@@ -39,7 +39,7 @@ body {
     margin: 0;
 }
 
-.nav-container>div>nav>ul>input {
+.nav-container>div>nav>ul>form>input {
     display: block;
     padding: 13.5px;
     margin: 0 auto;
