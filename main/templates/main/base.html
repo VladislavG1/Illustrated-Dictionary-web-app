@@ -28,7 +28,7 @@
                 <nav>
                     <ul>
                         <form role="search" action="" method="get">
-                            <input type="search" name="q" placeholder="Поиск">
+                            <input type="search" name="search" placeholder="Поиск" value="{% if request.GET.search %}{{ request.GET.search }}{% endif %}">
                         </form>
                     </ul>
                 </nav>

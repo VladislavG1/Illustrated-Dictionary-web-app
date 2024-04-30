@@ -32,6 +32,7 @@ def group(request, group_slug):
     with_voice = request.GET.get('with_voice', None)
     prefix = request.GET.get('prefix', None)
     postfix = request.GET.get('postfix', None)
+    search = request.GET.get('search', None)
     capital_letters = request.GET.get('capital_letters', None)
 
     cyrillic = ["а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ы", "э", "ю", "я"]
@@ -53,6 +54,9 @@ def group(request, group_slug):
 
     if postfix:
         data_wordgroup = data_wordgroup.filter(word__name__endswith=postfix)
+    
+    if search:
+        data_wordgroup = data_wordgroup.filter(word__name__icontains=search)
 
     paginator = Paginator(data_wordgroup, 3)
     current_page = request.GET.get('page')
