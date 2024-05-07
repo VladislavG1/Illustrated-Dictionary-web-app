@@ -6,14 +6,12 @@ function formingGroupFilterValue(clickedElement) {
     group = clickedElement.value;
     if(clickedElement.classList.contains('btn-primary')) {
         groupSet.add(group);
-        console.log(groupSet);
 
         clickedElement.classList.remove('btn-primary');
         clickedElement.classList.add('btn-success');
     }
     else {
         groupSet.delete(group);
-        console.log(groupSet);
 
         clickedElement.classList.remove('btn-success');
         clickedElement.classList.add('btn-primary');
@@ -25,6 +23,4 @@ function formingGroupFilterValue(clickedElement) {
     else {
         document.getElementById('groups_input').value = Array.from(groupSet).join('');
     }
-
-    console.log("Hi, America!");
 }
