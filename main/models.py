@@ -9,6 +9,7 @@ from django.db import models
 from django.urls import reverse
 from django.core.files.storage import default_storage
 
+
 class Group(models.Model):
     name = models.CharField(max_length=128, unique=True, verbose_name='Название группы')
     alias_name = models.CharField(max_length=128, unique=True, verbose_name='Кодовое обозначение для группы')
@@ -51,15 +52,36 @@ class Word(models.Model):
 
 class WordGroup(models.Model):
     
-    word = models.ForeignKey(Word, models.DO_NOTHING)
-    group = models.ForeignKey(Group, models.DO_NOTHING)
+    word = models.ForeignKey(Word, models.DO_NOTHING, verbose_name='Слово')
+    group = models.ForeignKey(Group, models.DO_NOTHING, verbose_name='Тематическая группа')
 
     class Meta:
         managed = False
         db_table = 'word_group'
         verbose_name = 'Связь между группами и словами'
         verbose_name_plural = 'Связи между группами и словами'
+        unique_together = (('word', 'group'),)
     
     def __str__(self):
         return f"{self.group.name} - {self.word.name} ({self.pk})"
     
+class Cyrillic(models.Model):
+    character = models.CharField(max_length=1)
+
+    class Meta:
+        managed = False
+        db_table = 'cyrillic'
+
+class TranscriptionList(models.Model):
+    letter = models.ForeignKey(Cyrillic, models.DO_NOTHING, verbose_name='Буква')
+    word = models.ForeignKey(Word, models.DO_NOTHING, verbose_name='Слово')
+
+    class Meta:
+        managed = False
+        db_table = 'transcription_list'
+        verbose_name = 'Список транскрипций'
+        verbose_name_plural = 'Список транскрипций'
+        unique_together = (('letter', 'word'),)
+
+    def __str__(self):
+        return f"{self.letter} - {self.word.name}"

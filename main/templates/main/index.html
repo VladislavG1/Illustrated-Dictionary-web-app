@@ -7,13 +7,102 @@
 {% endblock css %}
 
 
-{% block content %}
-<div class="group-filter-block">
-    <p><b>Слово дня</b></p>
-    <p>{{ word.name }}</p>
+{% block navigation %}
+<div class="navigation">
+    <a href="{% url "main:index" %}" class="active">&nbsp;&nbsp;Главная&nbsp;&nbsp;</a>
+    <a href="{% url "catalog:index" %}">Содержание</a>
+    <a href="{% url "admin:index" %}" target="_blank">Войти</a>
 </div>
+{% endblock navigation %}
 
-<div class="group-filter-block">
-    <p><b>Транскрипция</b></p>
+{% block content %}
+<div class="main-content">
+    <div class="word-of-the-day">
+        <h2>Слово дня:</h2>
+        <div class="category">
+            <a href="#"><img src="{% static "deps/images/category.jpg" %}" alt="Категория"></a>
+        </div>
+        <div class="word1">
+            <p>&nbsp;приве́т&nbsp;</p>
+            <img src="{% static "deps/images/пропись.jpg" %}" alt="Пропись">
+            <img src="{% static "deps/images/Vector.jpg" %}" alt="Вектор" data-audio="sound/bank.mp3">
+        </div>
+        <div class="word2">
+            <p>-Привет, как дела?<br> -Привет, всё хорошо.                
+                </p>
+            <img src="{% static "deps/images/young_man.jpg" %}" alt="Приветствие">
+        </div>
+    </div>
+    <div class="categories">
+        <div class="categories-top">
+            <h2>Транскрипция:</h2>
+            <div class="alphabet">
+                {% for alph_letter in alphabet %}
+                    <a href="" class="alphabet-link" data-letter="{{ alph_letter.upper }}" data-transcription="{% for element in list %}{% if element.letter.character == alph_letter.upper %}{{ element.word.name.lower }}-[{{ element.word.transcription }}] {% endif %}{% endfor %}">{{ alph_letter.upper }}{{ alph_letter }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock content %}
+
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+const alphabetLinks = document.querySelectorAll('.alphabet-link');
+
+alphabetLinks.forEach(function(link) {
+    link.addEventListener('click', function(event) {
+        event.preventDefault();
+        const letter = this.getAttribute('data-letter');
+        const transcription = this.getAttribute('data-transcription');
+        const transcriptions = transcription.split(' ');
+        showModal(letter, transcriptions);
+    });
+});
+function showModal(letter, transcriptions) {
+    const modalContainer = document.createElement('div');
+    modalContainer.classList.add('modal-container');
+
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
+
+    const closeBtn = document.createElement('span');
+    closeBtn.classList.add('close-btn');
+    closeBtn.innerHTML = '&times;';
+
+    const letterHeading = document.createElement('h2');
+    letterHeading.textContent = `Транскрипция буквы ${letter}`;
+    modalContent.appendChild(closeBtn);
+    modalContent.appendChild(letterHeading);
+    transcriptions.forEach(function(word) {
+        const transcriptionText = document.createElement('p');
+        transcriptionText.textContent = word;
+        modalContent.appendChild(transcriptionText);
+    });
+
+    modalContainer.appendChild(modalContent);
+
+    document.body.appendChild(modalContainer);
+
+    closeBtn.addEventListener('click', function() {
+        modalContainer.remove();
+    });
+}
+});
+document.addEventListener('DOMContentLoaded', function() {
+const vectorImage = document.querySelector('img[src="images/Vector.jpg"]');
+
+if (vectorImage) {
+    vectorImage.addEventListener('click', function() {
+        const audioPath = this.getAttribute('data-audio');
+        
+        if (audioPath) {
+            const audio = new Audio(audioPath);
+            audio.play();
+        }
+    });
+}
+});
+</script>
+{% endblock script %}

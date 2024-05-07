@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block css %}
+    
+    {% endblock css %}
+    <link rel="stylesheet" href="{% static "deps/fonts/formular/fonts.css" %}">
+</head>
+<body>
+    <div>
+        <div class="header">
+            <h1 style="margin: 0%;">Иллюстрированный словарь русского языка</h1>
+            <h2 style="margin: 0%; margin-top: 3px; margin-bottom: 5px;">Вводно-фонетический курс</h2>
+        </div>
+        <div class="nav-container">
+            <nav>
+                <ul>
+                    <li><a href="{% url "main:index" %}">Главная</a></li>
+                    <li><a href="{% url "catalog:index" %}">Содержание</a></li>
+                    <li><a href="{% url "main:about" %}">О нас</a></li>
+                </ul>
+            </nav>
+            <div>
+                <nav>
+                    <ul>
+                        {% block search_form %}{% endblock search_form %}
+                    </ul>
+                </nav>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{% url "admin:index" %}" target="_blank">Войти</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        {% block content %}{% endblock content %}
+    </div>
+</body>
+</html>

@@ -1,45 +1,54 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "deps/styles/style.css" %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     {% block css %}
     
     {% endblock css %}
-    <link rel="stylesheet" href="{% static "deps/fonts/formular/fonts.css" %}">
 </head>
 <body>
-    <div>
-        <div class="header">
-            <h1 style="margin: 0%;">Иллюстрированный словарь русского языка</h1>
-            <h2 style="margin: 0%; margin-top: 3px; margin-bottom: 5px;">Вводно-фонетический курс</h2>
+    {% block navigation %}
+    
+    {% endblock navigation %}
+    <div class="header">
+        <div class="logo">
+            <a href="{% url "main:index" %}"><img src="{% static "deps/images/logo_header.png" %}"></a>
         </div>
-        <div class="nav-container">
-            <nav>
-                <ul>
-                    <li><a href="{% url "main:index" %}">Главная</a></li>
-                    <li><a href="{% url "catalog:index" %}">Содержание</a></li>
-                    <li><a href="{% url "main:about" %}">О нас</a></li>
-                </ul>
-            </nav>
-            <div>
-                <nav>
-                    <ul>
-                        {% block search_form %}{% endblock search_form %}
-                    </ul>
-                </nav>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="{% url "admin:index" %}" target="_blank">Войти</a></li>
-                </ul>
-            </nav>
+        <div class="search">
+            <form>
+                <input type="text" placeholder="Искать здесь...">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
         </div>
     </div>
-    <div class="container">
-        {% block content %}{% endblock content %}
-    </div>
+    
+    {% block content %}
+    
+    {% endblock content %}
+
+    <footer class="footer">
+        <div class="footer-left">
+            <a href="https://www.csu.ru/"><p>Сайт ЧелГУ: csu.ru</p></a>
+            <p>454001, г. Челябинск, ул.Братьев Кашириных, 129</p>
+            <p>Кафедра русского языка как иностранного</p>
+        </div>
+        <div class="footer-center">
+            <img src="{% static "deps/images/logo_footer.jpg" %}" alt="logo">
+        </div>
+        <div class="footer-right">
+            <p>Математический факультет ЧелГУ</p>
+            <p>Глухов Владислав Игоревич</p>
+            <p>Коробейников Владислав Борисович</p>
+        </div>
+    </footer>
+
+    {% block script %}
+    
+    {% endblock script %}
 </body>
 </html>

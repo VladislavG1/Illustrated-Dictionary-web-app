@@ -69,7 +69,7 @@ def catalog(request):
         'alphabet': cyrillic,
         'dwg': data_wordgroup,
     }
-    return render(request, 'dictionary/catalog.html', context)
+    return render(request, 'dictionary/catalog_old.html', context)
 
 def word(request, word_slug):
     
@@ -81,7 +81,7 @@ def word(request, word_slug):
         'words': data_word,
         'wordgroup': data_wordgroup
     }
-    return render(request, 'dictionary/word.html', context)
+    return render(request, 'dictionary/word_old.html', context)
 
 def group(request, group_slug):
 
@@ -134,4 +134,4 @@ def group(request, group_slug):
         'slug_url': group_slug,
         'alphabet': cyrillic
     }
-    return render(request, 'dictionary/group.html', context)
+    return render(request, 'dictionary/group_old.html', context)
