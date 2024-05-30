@@ -1,0 +1,90 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load dictionary_tags %}
+
+{% block css %}
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static "deps/styles/style.css" %}">
+    <link rel="stylesheet" href="{% static "deps/styles/style2.css" %}">
+{% endblock css %}
+
+{% block navigation %}
+<div class="navigation">
+    <div class="nav-left">
+        <a href="{% url "main:index" %}">&nbsp;&nbsp;Главная&nbsp;&nbsp;</a>
+        <a href="{% url "catalog:index" %}" class="active">Содержание</a>
+    </div>
+    <div class="nav-right">
+        <a href="{% url "admin:index" %}" target="_blank">Войти</a>
+    </div>
+</div>
+{% endblock navigation %}
+
+
+
+
+{% block content %}
+<a name="content_list"></a>
+<div class="container">
+    <div class="categories">
+        <h1>Все категории:</h1>
+        <div class="category-list">
+            <script src="{% static "deps/scripts/group_filter.js" %}"></script>
+            {% comment %} В поле ввода для отправки GET-запроса формируется значение из GET-запроса groups_filter {% endcomment %}
+            <input type="text" name="groups_filter" id="groups_input" form="filter_form" 
+            value="{% if request.GET.groups_filter %}{{ request.GET.groups_filter }}{% endif %}" hidden>
+            {% comment %} Цикл по переданным группам {% endcomment %}
+            {% for group in groups %}
+            {% comment %} Если группа выбрана, то она подсвечивается, иначе нет  {% endcomment %}
+            <div class="category-item {% if group.alias_name in request.GET.groups_filter %}active-category{% else %}inactive-category{% endif %}" 
+            onclick="formingGroupFilterValue(this)" data-category="{{ group.alias_name }}">
+                <div class="category-button">
+                    {% comment %} Отображение переданных элементов группы {% endcomment %}
+                    <img src="{{ group.icon.url }}" alt="{{ group.name }}">
+                    <div class="category-label">{{ group.name }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="alphabet-submit-btn" form="filter_form">Применить</button>
+    </div>    
+    <div class="alphabet-words">
+        <div class="alphabet-catalog">
+
+            <!-- Алфавит здесь -->
+            <div class="alphabet-row">
+                    <script src="{% static "deps/scripts/word_filter.js" %}"></script>
+                    {% comment %} В поле ввода для отправки GET-запроса формируется значение из GET-запроса capital_letters {% endcomment %}
+                    <input type="text" id="letters_input" name="capital_letters" form="filter_form"
+                    value="{% if request.GET.capital_letters %}{{ request.GET.capital_letters }}{% endif %}" hidden>
+                    {% comment %} Цикл по переданным буквам алфавита {% endcomment %}
+                    {% for letter in alphabet %}
+                    {% comment %} Если буква выбрана, то она подсвечивается, иначе нет {% endcomment %}
+                    <button type="button" class="{% if letter.upper in request.GET.capital_letters %}alphabet-letter-active{% else %}alphabet-letter-inactive{% endif %}" 
+                    data-letter="{{ letter.upper }}" onclick="formingLetterFilterValue(this)">{{ letter.upper }}</button>
+                    {% endfor %}
+                    <button type="submit" form="filter_form" class="alphabet-submit-btn">&#10004;</button>
+            </div>
+        </div>
+        <div class="words">
+            {% for word in wordgroup %}
+                <li id="group_list_element"><a href="{% url "catalog:word" word.word.alias_name %}">{{ word.word.name }}</a></li>
+            {% endfor %}
+            <script src="{% static "deps/scripts/remove_duplicate_groups.js" %}"></script>
+        </div>
+        <div class="pagination">
+                {% if wordgroup.has_previous %}
+                    <a href="?{% change_params page=1 %}#content_list"><button class="pagination-button">⇇</button></a>
+                    <a href="?{% change_params page=wordgroup.previous_page_number %}#content_list"><button class="pagination-button">←</button></a>
+                {% endif %}
+     
+                <span class="pagination-info">Страница {{ wordgroup.number }} из {{ wordgroup.paginator.num_pages }}</span> 
+     
+                {% if wordgroup.has_next %}
+                    <a href="?{% change_params page=wordgroup.next_page_number %}#content_list"><button class="pagination-button">→</button></a>
+                    <a href="?{% change_params page=wordgroup.paginator.num_pages %}#content_list"><button class="pagination-button">⇉</button></a>
+                {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

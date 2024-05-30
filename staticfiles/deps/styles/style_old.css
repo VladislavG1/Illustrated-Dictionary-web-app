@@ -1,0 +1,83 @@
+body {
+    font-family: 'Formular';
+    background: url(../images/bg_pattern.jpg);
+}
+
+.header {
+    color: #891310;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: #d6d6d6;
+    margin-bottom: 10px;
+}
+
+.nav-container>nav>ul {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-container>nav>ul>li>a {
+    display: block;
+    padding: 10px;
+    border-style: solid;
+    border-radius: 3px;
+    border-width: 1px;
+}
+
+.nav-container>div {
+    width: 50%;
+}
+
+.nav-container>div>nav>ul {
+    padding: 0;
+    margin: 0;
+}
+
+.nav-container>div>nav>ul>form>input {
+    display: block;
+    padding: 13.5px;
+    margin: 0 auto;
+    width: 80%;
+}
+
+.word-img-example {
+    width: 350px;
+}
+
+.group-icon {
+    width: 55px;
+}
+
+.handwritten-text {
+    display: inline-block;
+    font-family: 'Propisi';
+    font-size: 110pt;
+    margin: 0;
+    padding: 100px;
+    background-image: url(../images/handwritten_pattern.svg);
+    background-size: fixed;
+    background-position-y: 5%;
+    background-position-x: -190%;
+}
+
+.group-page {
+    display: flex;
+    justify-content: flex-start;
+
+}
+
+.group-filter-block {
+    display: inline-block;
+    margin-right: 10px;
+    border-style: solid;
+    border-width: 1px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+}

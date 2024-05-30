@@ -1,0 +1,309 @@
+@font-face {
+    font-family: Inter; /* Гарнитура шрифта */
+    src: url(../fonts/inter/Inter-Italic.otf); /* Путь к файлу со шрифтом */
+}
+html,body{
+    margin: 0;
+    padding: 0;
+    font-family: Inter;
+
+}
+/* Стили для навигационной панели */
+.navigation {
+    background-color: #f0f0f0;
+    display: flex;
+}
+
+.navigation a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #000;
+    padding: 12px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.navigation a:hover {
+    background-color: #7BA7AB;
+    color: #fff;
+}
+
+.navigation a.active {
+    background-color: #c9c9c9;
+    color: #000000;
+}
+
+/* Стили для хедера */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    max-height: 200px;
+    background-color: #A26F9A;
+    border-top: 4px solid #7BA7AB;
+}
+
+.logo img {
+    width: 452px;
+    height: 172px;
+    border-radius: 25px;
+}
+
+.search input[type=text] {
+    width: 100%;
+    height: 52px;
+    padding-left: 10px;
+    border: 2px solid #7BA7AB;
+    border-radius: 15px;
+    outline: none;
+    background: white;
+    color: #9E9C9C;
+}
+
+.search form {
+    position: relative;
+    width: 950px;
+    margin: 0 20px;
+}
+
+.search button {
+    position: absolute;
+    top: 0;
+    right: -15px;
+    width: 56px;
+    height: 56px;
+    border: none;
+    background: #7BA7AB;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 22px;
+    color: wheat;
+}
+
+.search button:before {
+    display: none; /* Скрыть псевдоэлемент */
+}
+
+/* Стили для основного содержимого */
+.main-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.word-of-the-day {
+    height: auto;
+    border: solid #A26F9A;
+    border-radius: 25px;
+    position: relative;
+    width: 750px;
+}
+
+.word-of-the-day .category img {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border-radius: 5px;
+}
+
+.word-of-the-day h2, .categories h2 {
+    font-size: 45px;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.word-of-the-day .word1, .word-of-the-day .word2 {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 30px;
+    gap: 70px;
+}
+
+.word-of-the-day .word1 p {
+    font-size: 45px;
+    border: 4px solid grey;
+    border-radius: 15px;
+}
+
+.word-of-the-day .word2 p {
+    font-size: 30px;
+    font-style: italic;
+    margin-top: 20px; /* Расстояние от предыдущего блока */
+    overflow-wrap: break-word; /* Разрыв слов при нехватке места */
+    word-wrap: break-word; /* Альтернативное свойство для поддержки браузеров */
+}
+
+
+.word-of-the-day .word2 img {
+    max-width: 200px;
+    max-height: 270px;
+}
+
+.categories {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.categories-top {
+    width: 700px;
+    height: 600px;
+    border: 4px solid #A26F9A;
+    border-radius: 25px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.categories-top h2 {
+    font-size: 24px;
+    text-align: center;
+    text-decoration: underline;
+    margin-bottom: 20px;
+}
+
+.alphabet {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.alphabet a {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 10px;
+    font-size: 32px;
+    color: #A26F9A;
+    text-decoration: none;
+    border: 2px solid #A26F9A;
+    border-radius: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.alphabet a:hover {
+    background-color: #A26F9A;
+    color: #fff;
+}
+
+/* Стили для модального окна */
+.modal-container {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 28px;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #A26F9A;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-content button:hover {
+    background-color: #7BA7AB;
+}
+
+
+
+/*Стили для футера */
+.footer {
+    background-color: #A26F9A;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}   
+.footer-left {
+    width: 50%;
+}
+
+.footer-right {
+    width: 50%;
+    text-align: right;
+}
+.footer-center {
+    width: 50%;
+    text-align: center;
+}
+
+.footer p {
+    margin: 5px 0;
+    color: white;
+}
+.footer a {
+    text-decoration: none;
+}
+@keyframes pulseLogo {
+    0% {
+        transform: scale(1); /* Исходный размер */
+        filter: hue-rotate(0deg); /* Исходный цвет (без изменений) */
+    }
+    50% {
+        transform: scale(1.1); /* Увеличение размера до 1.1x */
+        filter: hue-rotate(90deg); /* Поворот цвета на 90 градусов */
+    }
+    100% {
+        transform: scale(1); /* Возврат к исходному размеру */
+        filter: hue-rotate(0deg); /* Возврат к исходному цвету */
+    }
+}
+
+/* Применение анимации к логотипу при наведении */
+.footer-center img {
+    height: 85px;
+    width: 85px;
+    border-radius: 15px;
+    transition: transform 0.3s ease; /* Плавное изменение размера */
+}
+
+.footer-center img:hover {
+    animation: pulseLogo 2s infinite; /* Запуск анимации при наведении */
+}

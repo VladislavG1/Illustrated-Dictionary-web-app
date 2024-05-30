@@ -4,41 +4,80 @@
 {% block css %}
     <title>{{ title }}</title>
     <link rel="stylesheet" href="{% static "deps/styles/style.css" %}">
+    <link rel="stylesheet" href="{% static "deps/fonts/propisi/fonts.css" %}">
 {% endblock css %}
 
 
 {% block navigation %}
 <div class="navigation">
-    <a href="{% url "main:index" %}" class="active">&nbsp;&nbsp;Главная&nbsp;&nbsp;</a>
-    <a href="{% url "catalog:index" %}">Содержание</a>
-    <a href="{% url "admin:index" %}" target="_blank">Войти</a>
+    <div class="nav-left">
+        <a href="{% url "main:index" %}" class="active">&nbsp;&nbsp;Главная&nbsp;&nbsp;</a>
+        <a href="{% url "catalog:index" %}">Содержание</a>
+    </div>
+    <div class="nav-right">
+        <a href="{% url "admin:index" %}" target="_blank">Войти</a>
+    </div>
 </div>
 {% endblock navigation %}
+
+
 
 {% block content %}
 <div class="main-content">
     <div class="word-of-the-day">
         <h2>Слово дня:</h2>
         <div class="category">
-            <a href="#"><img src="{% static "deps/images/category.jpg" %}" alt="Категория"></a>
+            {% comment %} 
+            Формирование ссылки для кнопки, перенаправляющей на страницу содержания
+            с примененным фильтром по тематическим группам, к которым относится слово дня
+            В GET-запрос с помощью цикла for передаются значения поля alias_name каждой
+            тематической группы, связанной с данным словом дня
+            {% endcomment %}
+            <a href="{% url "catalog:index" %}?groups_filter=
+            {% for el in wordgroup %}
+            {% if el.word.alias_name == word.alias_name %}{{ el.group.alias_name }},{% endif %}
+            {% endfor %}" 
+            {% comment %} В качестве пути передается ссылка на папку со статическим контентом,
+            а также ее подкаталоги, приводящие к конечному файлу {% endcomment %}
+            id="a_category"><img src="{% static "deps/images/category.jpg" %}" alt="Категория"></a>
         </div>
+        <script>
+            const href = document.getElementById('a_category').href;
+            const newHref = href.substring(0, href.length - 1);
+            document.getElementById('a_category').href = newHref;
+        </script>
+        {% comment %} Отображение переданных через контекст данных, присущих слову дня {% endcomment %}
         <div class="word1">
-            <p>&nbsp;приве́т&nbsp;</p>
-            <img src="{% static "deps/images/пропись.jpg" %}" alt="Пропись">
-            <img src="{% static "deps/images/Vector.jpg" %}" alt="Вектор" data-audio="sound/bank.mp3">
+            <p class="p_main">&nbsp;{{ word.name.lower }}&nbsp;</p>
+            <p class="handwritten-text">{{ word.name }}</p>
+            {% if word.audio %}
+            <img class="img-audio" src="{% static "deps/images/Vector.jpg" %}" alt="Вектор" data-audio="{{ word.audio.url }}">
+            {% else %}
+            <img src="{% static "deps/images/no_sound.png" %}" alt="Вектор">
+            {% endif %}
         </div>
         <div class="word2">
-            <p>-Привет, как дела?<br> -Привет, всё хорошо.                
-                </p>
-            <img src="{% static "deps/images/young_man.jpg" %}" alt="Приветствие">
+            <p>{{ word.example|safe }}</p>
+            {% if word.image %}
+                <img src="{{ word.image.url }}" alt="{{ word.name }}">
+            {% else %}
+                <img src="{% static "deps/images/Not image.png" %}" alt="{{ word.name }}">
+            {% endif %}
         </div>
     </div>
     <div class="categories">
         <div class="categories-top">
             <h2>Транскрипция:</h2>
             <div class="alphabet">
+                {% comment %} Цикл по всем буквам переданного алфавита {% endcomment %}
                 {% for alph_letter in alphabet %}
-                    <a href="" class="alphabet-link" data-letter="{{ alph_letter.upper }}" data-transcription="{% for element in list %}{% if element.letter.character == alph_letter.upper %}{{ element.word.name.lower }}-[{{ element.word.transcription }}] {% endif %}{% endfor %}">{{ alph_letter.upper }}{{ alph_letter }}</a>
+                    <a href="" class="alphabet-link" data-letter="{{ alph_letter.upper }}" 
+                    {% comment %} Цикл по всем элементам из переданного списка транскрипций {% endcomment %}
+                    data-transcription="{% for element in list %}
+                    {% comment %} Если буква в списке совпадает с текущей буквой кнопки - выводится слово и его транскрипция {% endcomment %}
+                    {% if element.letter.character == alph_letter.upper %}{{ element.word.name.lower }}-[{{ element.word.transcription }}] {% endif %}
+                    {% endfor %}">
+                    {{ alph_letter.upper }}{{ alph_letter }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -103,6 +142,22 @@ if (vectorImage) {
         }
     });
 }
+});
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const vectorImage = document.querySelector('img[src="{% static "deps/images/Vector.jpg" %}"]');
+    
+    if (vectorImage) {
+        vectorImage.addEventListener('click', function() {
+            const audioPath = this.getAttribute('data-audio');
+            
+            if (audioPath) {
+                const audio = new Audio(audioPath);
+                audio.play();
+            }
+        });
+    }
 });
 </script>
 {% endblock script %}

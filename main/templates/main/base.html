@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static "deps/styles/style.css" %}">
+    <link rel="icon" href="{% static 'deps/images/favicon.ico' %}" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     {% block css %}
     
@@ -20,8 +21,9 @@
             <a href="{% url "main:index" %}"><img src="{% static "deps/images/logo_header.png" %}"></a>
         </div>
         <div class="search">
-            <form>
-                <input type="text" placeholder="Искать здесь...">
+            <form action="/catalog/" method="get" id="filter_form">
+                <input type="text" id="searchInput" name="search" placeholder="Искать здесь..."
+                value="{% if request.GET.search %}{{ request.GET.search }}{% endif %}">
                 <button type="submit"><i class="fa fa-search"></i></button>
             </form>
         </div>
@@ -33,7 +35,7 @@
 
     <footer class="footer">
         <div class="footer-left">
-            <a href="https://www.csu.ru/"><p>Сайт ЧелГУ: csu.ru</p></a>
+            <a href="https://www.csu.ru/" target="_blank"><p>Сайт ЧелГУ: csu.ru</p></a>
             <p>454001, г. Челябинск, ул.Братьев Кашириных, 129</p>
             <p>Кафедра русского языка как иностранного</p>
         </div>
@@ -41,7 +43,7 @@
             <img src="{% static "deps/images/logo_footer.jpg" %}" alt="logo">
         </div>
         <div class="footer-right">
-            <p>Математический факультет ЧелГУ</p>
+            <a href="https://www.csu.ru/Lists/List2/страница%20факультета.aspx?ID=2" target="_blank"><p>Математический факультет ЧелГУ</p></a>
             <p>Глухов Владислав Игоревич</p>
             <p>Коробейников Владислав Борисович</p>
         </div>

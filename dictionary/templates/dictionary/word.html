@@ -1,0 +1,76 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block css %}
+    <title>{{ words.name }} {{ title }}</title>
+    <link rel="stylesheet" href="{% static "deps/styles/style.css" %}">
+    <link rel="stylesheet" href="{% static "deps/styles/style3.css" %}">
+    <link rel="stylesheet" href="{% static "deps/fonts/propisi/fonts.css" %}">
+{% endblock css %}
+
+{% block navigation %}
+<div class="navigation">
+    <div class="nav-left">
+        <a href="{% url "main:index" %}">&nbsp;&nbsp;Главная&nbsp;&nbsp;</a>
+        <a href="{% url "catalog:index" %}" class="active">Содержание</a>
+    </div>
+    <div class="nav-right">
+        <a href="{% url "admin:index" %}" target="_blank">Войти</a>
+    </div>
+</div>
+{% endblock navigation %}
+
+{% block content %}
+    <div class="main">
+        <div class="card">
+            <div class="category">
+                <a href="{% url "catalog:index" %}?groups_filter={% for el in wordgroup %}{% if el.word.alias_name == words.alias_name %}{{ el.group.alias_name }},{% endif %}{% endfor %}" id="a_category"><img src="{% static "deps/images/category.jpg" %}"></a>
+            </div>
+            <script>
+                const href = document.getElementById('a_category').href;
+                const newHref = href.substring(0, href.length - 1);
+                document.getElementById('a_category').href = newHref;
+            </script>
+            <div class="word1">
+                <p class="p_main">&nbsp;{{ words.name.lower }}&nbsp;</p>
+                <p class="handwritten-text">{{ words.name }}</p>
+                {% if words.audio %}
+                <img class="img-audio" src="{% static "deps/images/Vector.jpg" %}" alt="Вектор" data-audio="{{ words.audio.url }}">
+                {% else %}
+                <img src="{% static "deps/images/no_sound.png" %}" alt="Вектор">
+                {% endif %}
+            </div>
+            <div class="word2">
+                <p>{{ words.example|safe }}</p>
+                {% if words.image %}
+                    <img src="{{ words.image.url }}" alt="{{ words.name }}">
+                {% else %}
+                    <img src="{% static "deps/images/Not image.png" %}" alt="{{ words.name }}">
+                {% endif %}
+            </div>
+        </div>
+        <div class="button">
+            <a href="{% url "main:index" %}"><img src="{% static "deps/images/to_home.jpg" %}"></a>
+            <a href="{% url "catalog:index" %}?capital_letters={{ fl }}"><img src="{% static "deps/images/alphabet.png" %}"></a>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const vectorImage = document.querySelector('img[src="{% static "deps/images/Vector.jpg" %}"]');
+    
+    if (vectorImage) {
+        vectorImage.addEventListener('click', function() {
+            const audioPath = this.getAttribute('data-audio');
+            
+            if (audioPath) {
+                const audio = new Audio(audioPath);
+                audio.play();
+            }
+        });
+    }
+});
+</script>
+{% endblock script %}

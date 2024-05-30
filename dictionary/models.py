@@ -9,11 +9,14 @@ from django.db import models
 from django.urls import reverse
 from django.core.files.storage import default_storage
 
+from django.core.exceptions import ValidationError
+
 
 class Group(models.Model):
+    # Переменные, отражающие поля таблицы
     name = models.CharField(max_length=128, unique=True, verbose_name='Название группы')
     alias_name = models.CharField(max_length=128, unique=True, verbose_name='Кодовое обозначение для группы')
-    icon = models.ImageField(upload_to='group_icons', blank=True, null=True, verbose_name='Иконка')
+    icon = models.ImageField(upload_to='group_icons', verbose_name='Иконка')
 
     class Meta:
         managed = False
@@ -21,6 +24,7 @@ class Group(models.Model):
         verbose_name = 'Тематическая группа'
         verbose_name_plural = 'Тематические группы'
 
+    # Строковое представление объекта модели
     def __str__(self):
         return f"{self.name} ({self.pk})"
 
@@ -31,6 +35,20 @@ class Word(models.Model):
     example = models.TextField(blank=True, null=True, verbose_name="Пример")
     image = models.ImageField(upload_to='dictionary_images', blank=True, null=True, verbose_name='Изображение')
     audio = models.FileField(upload_to='words_audio', blank=True, null=True, verbose_name='Аудио')
+
+    # Дополнительные поля для отображения заполненности в списке админ-панели
+    @property
+    def transcription_filled(self):
+        return bool(self.transcription)
+    @property
+    def example_filled(self):
+        return bool(self.example)
+    @property
+    def image_filled(self):
+        return bool(self.image)
+    @property
+    def audio_filled(self):
+        return bool(self.audio)
 
     class Meta:
         managed = False
@@ -49,11 +67,21 @@ class Word(models.Model):
             return True
         else:
             return False
+        
+
+class WordDay(models.Model):
+    word = models.ForeignKey(Word, on_delete=models.CASCADE)
+    date = models.DateField()
+
+    class Meta:
+        managed = False
+        db_table = 'word_day'
+        unique_together = (('word', 'date'),)
 
 class WordGroup(models.Model):
     
-    word = models.ForeignKey(Word, models.DO_NOTHING, verbose_name='Слово')
-    group = models.ForeignKey(Group, models.DO_NOTHING, verbose_name='Тематическая группа')
+    word = models.ForeignKey(Word, on_delete=models.CASCADE, verbose_name='Слово')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name='Тематическая группа')
 
     class Meta:
         managed = False
@@ -77,7 +105,7 @@ class Cyrillic(models.Model):
 
 class TranscriptionList(models.Model):
     letter = models.ForeignKey(Cyrillic, models.DO_NOTHING, verbose_name='Буква')
-    word = models.ForeignKey(Word, models.DO_NOTHING, verbose_name='Слово')
+    word = models.ForeignKey(Word, on_delete=models.CASCADE, verbose_name='Слово')
 
     class Meta:
         managed = False

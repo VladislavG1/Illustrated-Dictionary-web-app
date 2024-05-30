@@ -1,16 +1,23 @@
 @font-face {
-    font-family: Inter; /* Гарнитура шрифта */
-    src: url(../fonts/inter/Inter-Italic.otf); /* Путь к файлу со шрифтом */
+    font-family: Inter;
+    src: url(../fonts/inter/Inter-Italic.otf);
 }
 html,body{
     margin: 0;
     padding: 0;
     font-family: Inter;
-
+    height: auto;
+    overflow: visible;
 }
 /* Стили для навигационной панели */
 .navigation {
     background-color: #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    width: auto;
+}
+
+.nav-left, .nav-right {
     display: flex;
 }
 
@@ -34,6 +41,15 @@ html,body{
     background-color: #c9c9c9;
     color: #000000;
 }
+.nav-right a {
+    color: #666;
+    font-size: 14px;
+    padding: 10px;
+}
+.nav-right a:hover{
+    background-color: transparent;
+    color: #666;
+}
 
 /* Стили для хедера */
 .header {
@@ -52,6 +68,12 @@ html,body{
     border-radius: 25px;
 }
 
+.search form {
+    position: relative;
+    width: 950px;
+    margin: 0 20px;
+}
+
 .search input[type=text] {
     width: 100%;
     height: 52px;
@@ -63,11 +85,6 @@ html,body{
     color: #9E9C9C;
 }
 
-.search form {
-    position: relative;
-    width: 950px;
-    margin: 0 20px;
-}
 
 .search button {
     position: absolute;
@@ -84,22 +101,29 @@ html,body{
 }
 
 .search button:before {
-    display: none; /* Скрыть псевдоэлемент */
+    display: none;
 }
 
 /* Стили для основного содержимого */
 .main-content {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: 20px;
+    min-height: 80vh;
+}
+.word-of-the-day, .categories {
+    height: 100%;
 }
 
 .word-of-the-day {
-    height: auto;
-    border: solid #A26F9A;
+    height: 100%;
+    min-height: 565px;
+    border: 4px solid #A26F9A;
     border-radius: 25px;
     position: relative;
-    width: 750px;
+    min-width: 650px;
+    padding-top: 20px;
+    width: auto;
 }
 
 .word-of-the-day .category img {
@@ -119,28 +143,34 @@ html,body{
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding-left: 30px;
-    gap: 70px;
+    padding-left: 20px;
+    padding-right: 20px;
+    gap: 55px;
 }
 
-.word-of-the-day .word1 p {
-    font-size: 45px;
+.p_main {
+    font-size: 38px;
     border: 4px solid grey;
     border-radius: 15px;
 }
 
 .word-of-the-day .word2 p {
-    font-size: 30px;
+    font-size: 26px;
     font-style: italic;
-    margin-top: 20px; /* Расстояние от предыдущего блока */
-    overflow-wrap: break-word; /* Разрыв слов при нехватке места */
-    word-wrap: break-word; /* Альтернативное свойство для поддержки браузеров */
+    margin-top: 20px; 
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 
 .word-of-the-day .word2 img {
     max-width: 200px;
     max-height: 270px;
+    border-radius: 25px;
+}
+
+.img-audio {
+    cursor: pointer;
 }
 
 .categories {
@@ -150,8 +180,8 @@ html,body{
 }
 
 .categories-top {
-    width: 700px;
-    height: 600px;
+    height: 80%;
+    width: 600px;
     border: 4px solid #A26F9A;
     border-radius: 25px;
     padding: 20px;
@@ -260,6 +290,7 @@ html,body{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: auto;
 }   
 .footer-left {
     width: 50%;
@@ -283,27 +314,38 @@ html,body{
 }
 @keyframes pulseLogo {
     0% {
-        transform: scale(1); /* Исходный размер */
-        filter: hue-rotate(0deg); /* Исходный цвет (без изменений) */
+        transform: scale(1);
+        filter: hue-rotate(0deg);
     }
     50% {
-        transform: scale(1.1); /* Увеличение размера до 1.1x */
-        filter: hue-rotate(90deg); /* Поворот цвета на 90 градусов */
+        transform: scale(1.1);
+        filter: hue-rotate(90deg);
     }
     100% {
-        transform: scale(1); /* Возврат к исходному размеру */
-        filter: hue-rotate(0deg); /* Возврат к исходному цвету */
+        transform: scale(1);
+        filter: hue-rotate(0deg);
     }
 }
 
-/* Применение анимации к логотипу при наведении */
 .footer-center img {
     height: 85px;
     width: 85px;
     border-radius: 15px;
-    transition: transform 0.3s ease; /* Плавное изменение размера */
+    transition: transform 0.3s ease;
 }
 
 .footer-center img:hover {
-    animation: pulseLogo 2s infinite; /* Запуск анимации при наведении */
+    animation: pulseLogo 2s infinite;
+}
+
+.handwritten-text {
+    display: inline-block;
+    font-family: 'Propisi';
+    font-size: 60pt;
+    margin: 0;
+    padding: 10px;
+    background-image: url(../images/handwritten_pattern.svg);
+    background-size: 170px;
+    background-position-y: 69%;
+    background-position-x: 0;
 }
