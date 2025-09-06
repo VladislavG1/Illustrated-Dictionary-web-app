@@ -1,0 +1,162 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block css %}
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static "deps/styles/style.css" %}">
+    <link rel="stylesheet" href="{% static "deps/fonts/propisi/fonts.css" %}">
+{% endblock css %}
+
+
+{% block navigation %}
+<div class="navigation">
+    <div class="nav-left">
+        <a href="{% url "main:index" %}" class="active">&nbsp;&nbsp;Главная&nbsp;&nbsp;</a>
+        <a href="{% url "catalog:index" %}">Содержание</a>
+    </div>
+    <div class="nav-right">
+        <a href="{% url "admin:index" %}" target="_blank">Войти</a>
+    </div>
+</div>
+{% endblock navigation %}
+
+
+
+{% block content %}
+<div class="main-content">
+    <div class="word-of-the-day">
+        <h2>Слово дня:</h2>
+        {% if word %}
+            <div class="category">
+                {% comment %} 
+                Формирование ссылки для кнопки, перенаправляющей на страницу содержания
+                с примененным фильтром по тематическим группам, к которым относится слово дня
+                В GET-запрос с помощью цикла for передаются значения поля alias_name каждой
+                тематической группы, связанной с данным словом дня
+                {% endcomment %}
+                <a href="{% url "catalog:index" %}?groups_filter={% for el in wordgroup %}{% if el.word.alias_name == word.alias_name %}{{ el.group.alias_name }},{% endif %}{% endfor %}" 
+                {% comment %} В качестве пути передается ссылка на папку со статическим контентом,
+                а также ее подкаталоги, приводящие к конечному файлу {% endcomment %}
+                id="a_category"><img src="{% static "deps/images/category.jpg" %}" alt="Категория"></a>
+            </div>
+            <script>
+                const href = document.getElementById('a_category').href;
+                const newHref = href.substring(0, href.length - 1);
+                document.getElementById('a_category').href = newHref;
+            </script>
+            {% comment %} Отображение переданных через контекст данных, присущих слову дня {% endcomment %}
+            <div class="word1">
+                <p class="p_main">&nbsp;{{ word_name.lower|safe }}&nbsp;</p>
+                <p class="handwritten-text">{{ word.name }}</p>
+                {% if word.audio %}
+                <img class="img-audio" src="{% static "deps/images/Vector.jpg" %}" alt="Вектор" data-audio="{{ word.audio.url }}">
+                {% else %}
+                <img src="{% static "deps/images/no_sound.png" %}" alt="Вектор">
+                {% endif %}
+            </div>
+            <div class="word2">
+                <p>{{ word.example|safe }}</p>
+                {% if word.image %}
+                    <img src="{{ word.image.url }}" alt="{{ word.name }}">
+                {% else %}
+                    <img src="{% static "deps/images/Not image.png" %}" alt="{{ word.name }}">
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="categories">
+        <div class="categories-top">
+            <h2>Транскрипция:</h2>
+            <div class="alphabet">
+                {% comment %} Цикл по всем буквам переданного алфавита {% endcomment %}
+                {% for alph_letter in alphabet %}
+                    <a href="" class="alphabet-link" data-letter="{{ alph_letter.upper }}" 
+                    {% comment %} Цикл по всем элементам из переданного списка транскрипций {% endcomment %}
+                    data-transcription="{% for element in list %}
+                    {% comment %} Если буква в списке совпадает с текущей буквой кнопки - выводится слово и его транскрипция {% endcomment %}
+                    {% if element.letter.character == alph_letter.upper %}{{ element.word.name.lower }}-[{{ element.word.transcription }}] {% endif %}
+                    {% endfor %}">
+                    {{ alph_letter.upper }}{{ alph_letter }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+const alphabetLinks = document.querySelectorAll('.alphabet-link');
+
+alphabetLinks.forEach(function(link) {
+    link.addEventListener('click', function(event) {
+        event.preventDefault();
+        const letter = this.getAttribute('data-letter');
+        const transcription = this.getAttribute('data-transcription');
+        const transcriptions = transcription.split(' ');
+        showModal(letter, transcriptions);
+    });
+});
+function showModal(letter, transcriptions) {
+    const modalContainer = document.createElement('div');
+    modalContainer.classList.add('modal-container');
+
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
+
+    const closeBtn = document.createElement('span');
+    closeBtn.classList.add('close-btn');
+    closeBtn.innerHTML = '&times;';
+
+    const letterHeading = document.createElement('h2');
+    letterHeading.textContent = `Транскрипция буквы ${letter}`;
+    modalContent.appendChild(closeBtn);
+    modalContent.appendChild(letterHeading);
+    transcriptions.forEach(function(word) {
+        const transcriptionText = document.createElement('p');
+        transcriptionText.textContent = word;
+        modalContent.appendChild(transcriptionText);
+    });
+
+    modalContainer.appendChild(modalContent);
+
+    document.body.appendChild(modalContainer);
+
+    closeBtn.addEventListener('click', function() {
+        modalContainer.remove();
+    });
+}
+});
+document.addEventListener('DOMContentLoaded', function() {
+const vectorImage = document.querySelector('img[src="images/Vector.jpg"]');
+
+if (vectorImage) {
+    vectorImage.addEventListener('click', function() {
+        const audioPath = this.getAttribute('data-audio');
+        
+        if (audioPath) {
+            const audio = new Audio(audioPath);
+            audio.play();
+        }
+    });
+}
+});
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const vectorImage = document.querySelector('img[src="{% static "deps/images/Vector.jpg" %}"]');
+    
+    if (vectorImage) {
+        vectorImage.addEventListener('click', function() {
+            const audioPath = this.getAttribute('data-audio');
+            
+            if (audioPath) {
+                const audio = new Audio(audioPath);
+                audio.play();
+            }
+        });
+    }
+});
+</script>
+{% endblock script %}

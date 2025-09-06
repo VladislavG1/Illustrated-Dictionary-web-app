@@ -1,0 +1,62 @@
+@font-face {
+    font-family: 'OfficinaSans';
+    src: url('OfficinaSans-ExtraBold.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OfficinaSans';
+    src: url('OfficinaSans-BookItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'OfficinaSans';
+    src: url('OfficinaSans-Book.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OfficinaSans';
+    src: url('OfficinaSans-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OfficinaSans';
+    src: url('OfficinaSans-ExtraBoldItalic.woff') format('woff');
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'OfficinaSans';
+    src: url('OfficinaSans-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OfficinaSans';
+    src: url('OfficinaSans-BoldItalic.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'OfficinaSans';
+    src: url('OfficinaSans-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OfficinaSans';
+    src: url('OfficinaSans-BlackItalic.woff') format('woff');
+    font-weight: 900;
+    font-style: italic;
+}
